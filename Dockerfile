@@ -1,17 +1,9 @@
+FROM python:3.9
 
-#Pull conda from image
-FROM continuumio/miniconda3
-RUN conda update conda
+WORKDIR /jup
 
-WORKDIR /python_test
+RUN pip install jupyter -U && pip install jupyterlab
 
-#Copy everything over to the image
-COPY ./ .
+EXPOSE 8888
 
-RUN conda env create -f environment.yml
-
-# Make RUN commands use the new conda environment:
-SHELL ["conda", "run", "-n", "pythontest", "/bin/bash", "-c"]
-
-RUN pip install python-openstackclient
-
+ENTRYPOINT ["jupyter", "lab","--ip=0.0.0.0","--allow-root"]
